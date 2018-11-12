@@ -172,7 +172,11 @@
   }
   
   .message {
-    border: 2px solid#0080ff;
+    /* border: 2px solid#0080ff; */
+    background-color: #ffffffa8;
+    box-shadow: 13px 11px 48px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 13px 11px 48px -1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 13px 11px 48px -1px rgba(0,0,0,0.75);
     border-radius: 10px;
     margin: 8px;
     max-width: 500px;
