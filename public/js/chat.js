@@ -18,6 +18,7 @@ function scrollToBottom() {
 
 socket.on('connect', function() {
     let params = $.deparam(window.location.search);
+    $('.chat__sidebar h3').text('Room: ' + params.room.toLowerCase());
     socket.emit('join', params, function(err) {
         if(err) {
             alert(err);
@@ -34,6 +35,9 @@ socket.on('disconnect', function() {
 
 socket.on('updateUserList', function(users) {
     let $ol = $('<ol></ol>');
+    $ol.css({
+        'list-style-type': 'none'
+    });
 
     users.forEach(function(user) {
         $ol.append($('<li></li>').text(user));
