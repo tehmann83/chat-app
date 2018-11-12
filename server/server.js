@@ -15,6 +15,9 @@ let users = new Users();
 
 app.use(express.static(publicPath));
 
+const fetch = require("node-fetch");
+const url = 'http://assignment.bunq.com/users';
+
 io.on('connection', (socket) => {
     console.log('New user connected');
 
@@ -28,6 +31,17 @@ io.on('connection', (socket) => {
         socket.join(params.room);
         users.removeUser(socket.id);
         users.addUser(socket.id, params.name, params.room);
+
+        fetch(url)
+            .then(res => res.json())
+            .then((out) => {
+                out.forEach((bunqUser) => {
+                    users.removeUser(bunqUser.id);
+                    users.addUser(bunqUser.id, bunqUser.name, params.room);
+                    io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+                });
+            })
+            .catch(err => { throw err });
 
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
